@@ -303,7 +303,7 @@
           <div class="compact">
             <h2 class="">Deep Potential</h2>
             <h4>Determining gravitational potential from stellar kinematics</h4>
-            <h4>Galaxy Coffee, MPIA, Heidelberg, 7 December 2023</h4>
+            <p>Galaxy Coffee, MPIA, Heidelberg, 7 December 2023</p>
             <img class="full-width" data-src="../media/deep_potential/barred_nbody_timesteps_background.svg"></img>
             <h4 class="">Taavet Kalda, Gregory M. Green, Soumavo Ghosh (MPIA)</h4>
           </div>
@@ -330,7 +330,7 @@
 						<div class="multicol vcenter">
 							<ul>
 								<li class="fragment" data-fragment-index=1>
-									Gaia + spectroscopic surveys are delivering a snapshot of phase space (6D $\sim 30\cdot 10^6$).
+									Gaia + spectroscopic surveys are delivering full 6D kinematics for $\sim 30\cdot 10^6$ sources.
 								</li>
 								<li class="fragment" data-fragment-index=2>
 									<i>Accelerations</i> tell us about the potential:
@@ -494,13 +494,13 @@
 					<div class="multicol vcenter">
 						<div>
 							<ul>
-								<li class="fragment">Universal approximators.</li>
-								<li class="fragment">Auto-differentiability.</li>
-								<li class="fragment">Given a neural network $y_\theta(x)$ with weights $\theta$, we can analytically compute both $\frac{\partial y_\theta}{\partial \theta}$ and $\frac{\partial y_\theta}{\partial x}$.</li>
+								<li class="fragment" data-fragment-index=1>Universal approximators.</li>
+								<li class="fragment" data-fragment-index=2>Auto-differentiability.</li>
+								<li class="fragment" data-fragment-index=3>Given a neural network $y_\theta(x)$ with weights $\theta$, we can analytically compute both $\frac{\partial y_\theta}{\partial \theta}$ and $\frac{\partial y_\theta}{\partial x}$.</li>
 							</ul>
 						</div>
 						<div>
-							<img data-src="../media/misc/Artificial_neural_network_dark.svg" width="70%"></img>
+							<img class="fragment" data-fragment-index=1 data-src="../media/misc/Artificial_neural_network_dark.svg" width="70%"></img>
 						</div>
 					</div>
 
@@ -540,9 +540,9 @@
                   <p>&nbsp;&nbsp;&nbsp;$p \left( \vec{x} \right)$ is simple, but $p \left( \vec{y} \right)$ is complicated.</p>
                 </li>
 
-                <li class="fragment">
+                <!--<li class="fragment">
                   <p>Sampling: draw $\vec{x} \sim p\big(\vec{x}\big)$, transform to $\vec{y}$.</p>
-                </li>
+                </li>!-->
               </ul>
             </div>
           </section>
@@ -575,7 +575,7 @@
 
           <section>
             <h4>Compute gradients of the distribution function</h4>
-            <img data-src="../media/deep_potential/deep_potential_explanatory_figure_df_grads.svg"></img>
+            <img width=60% data-src="../media/deep_potential/deep_potential_explanatory_figure_df_grads.svg"></img>
             <p>Normalizing flows are <span class="df-color">differentiable</span>.</p>
             <div class="fragment space-top">
               <p>Easy to implement in autodiff packages such as Tensorflow, PyTorch and JAX.</p>
@@ -603,13 +603,13 @@
                   \require{color}
                   \DeclareMathOperator*{\argmin}{arg\,min}
                   \DeclareMathOperator*{\asinh}{asinh}
-                  \theta^{\ast}
+                  \theta^{\ast}, \Omega^{\ast}
                   =
-                  \argmin_{\theta}
+                  \argmin_{\theta, \Omega}
                   \left<
                     {\color{lightgreen}
                       \asinh \left|
-                        \frac{\left(\partial f_{\varphi^{\ast}}\right)_\Omega}{\partial t}
+                        \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
                       \right|
                     }
                     +
@@ -633,12 +633,12 @@
                   \require{color}
                   \DeclareMathOperator*{\argmin}{arg\,min}
                   \DeclareMathOperator*{\asinh}{asinh}
-                  \theta^{\ast}
+                  \theta^{\ast}, \Omega^{\ast}
                   =
-                  \argmin_{\theta}
+                  \argmin_{\theta, \Omega}
                   \left<
                     \asinh \left|
-                      \frac{\left(\partial f_{\varphi^{\ast}}\right)_\Omega}{\partial t}
+					  \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
                     \right|
                     +
                     {\color{red}
@@ -663,14 +663,14 @@
                   \require{color}
                   \DeclareMathOperator*{\argmin}{arg\,min}
                   \DeclareMathOperator*{\asinh}{asinh}
-                  \theta^{\ast}
+                  \theta^{\ast}, \Omega^{\ast}
                   =
-                  \argmin_{\theta}
+                  \argmin_{\theta, \Omega}
                   {\color{cyan}
                   \left<
                     {\color{white}
                     \asinh \left|
-                      \frac{\left(\partial f_{\varphi^{\ast}}\right)_\Omega}{\partial t}
+                      \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
                     \right|
                     +
                     \lambda \, \asinh \left(
@@ -822,10 +822,10 @@
 							<img data-src="../media/deep_potential/1kpc_r=09_r=10.png" class="full-width fragment"></img>
 						</div>
 					</section>
+				</section>
 
-					<section>
-						<h1>Questions?</h1>
-					</section>
+				<section>
+					<h1>Questions?</h1>
 				</section>
 			</div>
 
