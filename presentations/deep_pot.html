@@ -301,8 +301,8 @@
 
         <section class="full-height">
           <div class="compact">
-            <h2 class="">Deep Potential</h2>
-            <h4>Determining gravitational potential from stellar kinematics</h4>
+            <h2 style="font-size:250%;">Deep Potential</h2>
+            <h4 style="font-size:140%;">Determining gravitational potential from stellar kinematics</h4>
             <p>Galaxy Coffee, MPIA, Heidelberg, 7 December 2023</p>
             <img class="full-width" data-src="../media/deep_potential/barred_nbody_timesteps_background.svg"></img>
             <h4 class="">Taavet Kalda, Gregory M. Green, Soumavo Ghosh (MPIA)</h4>
@@ -335,7 +335,7 @@
 								<li class="fragment" data-fragment-index=2>
 									<i>Accelerations</i> tell us about the potential:
 									$$
-									\vec a = -\nabla \Phi \left( \vec{x} \right).
+									\vec a = -\vec\nabla \Phi \left( \vec{x} \right).
 									$$
 								</li>
 								<li class="fragment" data-fragment-index=3>$\vec a$ is unobservable <em>(as of yet)</em>.</li>
@@ -554,8 +554,8 @@
               $f_{\varphi}$ is a normalizing flow with a large number of fitting parameters, $\varphi$.
             </p>
             <p class="fragment space-top">
-              Maximize the Poisson likelihood of the stars, varying $\varphi$:
-              $$
+              We train $\varphi$ to maximize the log-likelihood of the stars:
+              <!-- $$
               \DeclareMathOperator*{\argmax}{arg\,max}
               \varphi^{\ast}
               =
@@ -568,6 +568,12 @@
                 \sum_{\mathrm{star}\ k}
                   \ln f_{\varphi} \! \left( \hat{x}_k , \hat{v}_k \right)
               \Bigg]
+              \, .
+              $$ -->
+							$$
+              L_\varphi =
+                \sum_{\mathrm{star}\ k}
+                  \ln f_{\varphi} \! \left( \vec{x}_k , \vec{v}_k \right)
               \, .
               $$
             </p>
@@ -594,12 +600,35 @@
             <div class="r-stack">
               <div class="fragment current-visible">
                 <p>Represent $\Phi$ as a neural network: $\Phi_{\theta} \left( \vec{x} \right)$.
-                <p>&rArr; <span class="cyan">auto-differentiable</span>: $\frac{\partial \Phi}{\partial \vec{x}}$.</p>
+                <p>&rArr; <span class="phi-color">Differentiable</span>: $\frac{\partial \Phi}{\partial \vec{x}}$.</p>
               </div>
               <div class="fragment current-visible">
-                <p>Find parameters $\theta$, $\Omega$ that minimize <span class="green">non-stationarity</span>:</p>
+                <p>Train $\theta$, $\Omega$ to minimize <span class="green">non-stationarity</span>:</p>
                 <p>
+									$$
+                  \require{color}
+                  \DeclareMathOperator*{\argmin}{arg\,min}
+                  \DeclareMathOperator*{\asinh}{asinh}
+									L_\Phi = 
+                  \left<
+                    {\color{lightgreen}
+                      \asinh \left|
+                        \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
+                      \right|
+                    }
+                    +
+                    \lambda \, \asinh \left(
+                      \max \left\{
+                        -\nabla^2 \Phi_{\theta}
+                        , \,
+                        0
+                      \right\}
+                    \right)
+                  \right>_{
+                    \vec{x} , \vec{v} \, \sim \, f_{\varphi^{\ast}}
+                  }
                   $$
+                  <!-- $$
                   \require{color}
                   \DeclareMathOperator*{\argmin}{arg\,min}
                   \DeclareMathOperator*{\asinh}{asinh}
@@ -623,7 +652,7 @@
                   \right>_{
                     \vec{x} , \vec{v} \, \sim \, f_{\varphi^{\ast}}
                   }
-                  $$
+                  $$ -->
                 </p>
               </div>
               <div class="fragment current-visible">
@@ -633,9 +662,7 @@
                   \require{color}
                   \DeclareMathOperator*{\argmin}{arg\,min}
                   \DeclareMathOperator*{\asinh}{asinh}
-                  \theta^{\ast}, \Omega^{\ast}
-                  =
-                  \argmin_{\theta, \Omega}
+									L_\Phi = 
                   \left<
                     \asinh \left|
 					  \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
@@ -663,9 +690,7 @@
                   \require{color}
                   \DeclareMathOperator*{\argmin}{arg\,min}
                   \DeclareMathOperator*{\asinh}{asinh}
-                  \theta^{\ast}, \Omega^{\ast}
-                  =
-                  \argmin_{\theta, \Omega}
+									L_\Phi = 
                   {\color{cyan}
                   \left<
                     {\color{white}
@@ -729,7 +754,7 @@
           <section>
             <h3>2. Fit gravitational potential</h3>
             <div class="r-stack space-top">
-              <p class="fragment current-visible" data-fragment-index=1>Accelerations: $\vec{a} = -\nabla \Phi$</p>
+              <p class="fragment current-visible" data-fragment-index=1>Accelerations: $\vec{a} = -\vec\nabla \Phi$</p>
               <p class="fragment current-visible" data-fragment-index=2>Densities: $\rho = \nabla^2 \Phi / \left(4\pi G\right)$</p>
 							<p class="fragment fade-in" data-fragment-index=3>Rotation speed: $\Omega= 17.5\,\mathrm{km\,s^{-1}\,kpc^{-1}}$ (truth: $20.7\,\mathrm{km\,s^{-1}\,kpc^{-1}}$)</p>
             </div>
