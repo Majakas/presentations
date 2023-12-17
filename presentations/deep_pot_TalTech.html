@@ -316,6 +316,10 @@
           <div class="abs-bottom-left">
             <img data-src="../media/logos/AvH-Logo_horizontal.svg" class="half-width" style="width:40%; filter:contrast(0.5) brightness(1.2);"></img>
           </div>
+					<aside class="notes">
+						<p>I'm Taavet and I'm a 2nd year PhD student from the Max Planck Institute of Astronomy in Heidelberg in Germany and I'm here to present my research.</p>
+						<p>I'm going to be talking about Deep Potential, which is a machine learning based method for inferring the gravitational potential of a stellar system based on a snapshot of its stellar kinematics.</p>
+					</aside>
         </section>
 
 				<section>
@@ -334,10 +338,6 @@
 						<div class="footer">
 							<p class="attribution">(image credit: ESO)</p>
 						</div>
-						<aside class="notes">
-							<p>Can't see overall structure of Galaxy.</p>
-							<p>Can see some features - disk, dust lanes.</p>
-						</aside>
 					</section>
 
 					<section class="compact">
@@ -348,7 +348,7 @@
 								<p class="attribution">(image credit: NASA/JPL-Caltech/ESO/Robert Hurt)</a></p>
 							</div>
 							<ul>
-								<li>Milky Way and other stellar systems are made up of all sorts of stuff.</li>
+								<li>Milky Way and other stellar systems are made up of all sorts of stuff:</li>
 								<ul>
 									<li>Stars (~7%)</li>
 									<li>Interstellar dust and gas (~3%)</li>
@@ -359,9 +359,9 @@
 							</ul>
 						</div>
 						<aside class="notes">
-							<p>This is the kind of view we'd like to have, but won't.</p>
-							<p>MW is closest-up galaxy we have, so we'd like to know more about it.</p>
-							<p>Need calculation to know the structure of the MW.</p>
+							<p>Milky Way, the galaxy we live in, and other stellar systems are made up of all sorts of stuff.</p>
+							<p>Rich in structure. Galactic bar, spiral arms and the disk itself are made up of many components with different ages and chemical compositions.</p>
+							<p> We only observe a small subset because of dust and stars blocking our view, but also because the farther away stars are often too dim for our current instruments to detect.</p>
 						</aside>
           </section>
 
@@ -388,6 +388,9 @@
 							<li>Gaia + spectroscopic surveys provides us with 33 million stars with full 6D phase-space coordinates.</li>
 							<li class="fragment" -data-fragment-index="2">What can we figure out about the overall matter distribution based on the positions of surveyed stars?</li>
 						</ul>
+						<aside class="notes">
+							<p>One of the questions that the field of galactic dynamics aims to answer is how much we can infer about the overall matter distribution based on the limited things that we do see.</p>
+						</aside>
 					</section>
 				</section>
 
@@ -576,6 +579,9 @@
 						</div>
 					</div>
 
+					<aside class="notes">
+						<p>This naturally leads into representing, for example, the gravitational potential with a neural network.</p>
+					</aside>
 				</section>
 				
 				<section>
@@ -894,16 +900,27 @@
 
 					<section>
             <div class="multicol vcenter">
-						<div>
-							<h4>Artist's impression of the Milky Way</h4>
-							<img data-src="../media/gaia/milky_way_gaia_range.jpg" style="rotate:90deg;" width="100%"></img>
-							<p class="attribution"><a href="https://www.nasa.gov/feature/clumpy-recycled-gas-from-stars-surrounds-milky-way">(image credit: NASA/JPL-Caltech/R. Hurt)</a></p>
+							<div class="r-stack">
+								<div class="fragment fade-out" data-fragment-index=1>
+									<img data-src="../media/gaia/logo.jpg" width=400px></img>
+								</div>
+								<div class="fragment" data-fragment-index=1>
+									<h4>Artist's impression of the Milky Way</h4>
+									<img data-src="../media/gaia/milky_way_gaia_range.jpg" style="rotate:90deg;" width="100%"></img>
+									<p class="attribution"><a href="https://www.nasa.gov/feature/clumpy-recycled-gas-from-stars-surrounds-milky-way">(image credit: NASA/JPL-Caltech/R. Hurt)</a></p>
+								</div>
+							</div>
+							<ul>
+								<li>Gaia provides us with 33 million stars with full 6D phase-space coordinates.</li>
+							<ul>
+								<li>Operating between 2013 and 2025.
+								</li>
+								<li>Most precise three-dimensional map of the Milky Way to date.</li>
+							</ul>
+							<li class="fragment" data-framgent-index=1>We can construct datasets with $\sim 5$ million stars.</li>
+							<li class="fragment" data-framgent-index=2>Extinction and crowding makes our life complicated</li>
+							</ul>
 						</div>
-						<ul>
-							<li>Gaia provides us with 33 million stars with full 6D phase-space coordinates.</li>
-							<li>We can construct datasets with $\sim 5$ million stars.</li>
-							<li>Extinction and crowding makes our life complicated</li>
-						</ul>
 					</section>
 
 					<section class="full-width">
