@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Deep Potential</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="icon" href="../icon.ico">
+		
+		<link rel="stylesheet" href="../revealjs/dist/reveal.css">
+		<link rel="stylesheet" href="../revealjs/dist/theme/night.css" id="theme">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="../revealjs/plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+
+	<style>
+		/* Override theme variables */
+		:root {
+		  --r-background-color: #000000;
+		  --r-main-font-size: 16pt;
+		}
+	
+		/* Stroke text */
+		.stroke-text-dark {
+		  text-stroke: 1px black;
+		  -webkit-text-stroke: 1px black;
+		  paint-order: stroke fill;
+		}
+		.stroke-text-light {
+		  text-stroke: 1px white rgba(255,255,255,0.3);
+		  -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+		  paint-order: stroke fill;
+		}
+	
+		/* Translation in parentheses */
+		.translation {
+		  color: #888;
+		}
+	
+		/* Attribution text */
+		p.attribution, span.attribution {
+		  font-size: 70%;
+		  color: #aaa;
+		  margin-top: 0;
+		  /*margin: calc(0.5 * var(--r-block-margin)) 0;*/
+		}
+		p.attribution a, span.attribution a {
+		  color: #ddf;
+		}
+	
+		/* Compact */
+		.compact * {
+		  margin: calc(0.3 * var(--r-block-margin)) 0 !important;
+		}
+	
+		.compact-p p {
+		  margin: calc(0.3 * var(--r-block-margin)) 0 !important;
+		}
+	
+		.compact img {
+		  max-width: 100%;
+		}
+	
+		/* Ultra-compact */
+		.ultracompact * {
+		  margin: 0 0 !important;
+		}
+	
+		.ultracompact-p p {
+		  margin: 0 0 !important;
+		}
+	
+		.ultracompact img {
+		  max-width: 100%;
+		}
+	
+		/* Footer (bottom of slide)
+		   .footer only works if the slide is .full-height */
+		section.full-height {
+		  height: 100%;
+		}
+	
+		div.footer {
+		  position: absolute;
+		  bottom: 0px;
+		  width: 100%;
+		  text-align: center;
+		}
+	
+		div.abs-bottom-right {
+		  position: absolute;
+		  bottom: 0px;
+		  right: 0px;
+		}
+		div.abs-bottom-right * {
+		  float: right;
+		}
+	
+		div.abs-bottom-left {
+		  position: absolute;
+		  bottom: 0px;
+		  left: 0px;
+		}
+		div.abs-bottom-left > * {
+		  float: left;
+		}
+	
+		/* .abs-vcenter only works if the slide is .full-height.
+		   Use in slides that have .footer, to center rest of content.
+		 */
+		div.abs-vcenter {
+		  position: absolute;
+		  top: 50%;
+		  margin-top: -25%;
+		}
+	
+		/* Vertically center content in container */
+		.vertical-center {
+		  display: flex;
+		  justify-content: center;
+		  align-content: center;
+		  flex-direction: column;
+		}
+	
+		/* Slide-specific vertical centering override */
+		.reveal .slides section[data-vertical-align-top]{
+		  top: 0 !important;
+		}
+	
+		/* Invert colors - useful for adapting graphics for dark slides. */
+		img.invert-colors, video.invert-colors {
+		  filter: invert(1);
+		}
+	
+		/* Image width */
+		img.half-width, video.half-width {
+		  max-width: 50%;
+		}
+		img.limit-width, video.limit-width {
+		  max-width: 70%;
+		}
+		img.full-width, div.full-width {
+		  width: 100%;
+		}
+		img.full-height, div.full-height {
+		  height: 100%;
+		}
+	
+		/* Item placement in r-stack environment */
+		.reveal .r-stack .align-top {
+		  margin: initial;
+		}
+	
+		/* Basic slide layouts */
+		.multicol {
+		  display: flex;
+		  flex-direction: row;
+		}
+		.multicol.vcenter {
+		  align-items: center;
+		}
+		.multicol.vleft {
+		  align-items: left;
+		}
+		.multicol > div {
+		  flex-basis: 50%;
+		  margin-left: calc(0.5 * var(--r-block-margin));
+		  margin-right: calc(0.5 * var(--r-block-margin));
+		}
+		.multicol > div.wide {
+		  flex-basis: 67%;
+		}
+		.multicol > div.wider {
+		  flex-basis: 100%;
+		}
+		.multicol > div.widest {
+		  flex-basis: 120%;
+		}
+	
+		.multirow {
+		  display: flex;
+		  flex-direction: column;
+		}
+		.multirow.vcenter {
+		  align-items: center;
+		}
+		.multirow > div {
+		  flex-basis: 50%;
+		  margin-top: calc(0.5 * var(--r-block-margin));
+		  margin-bottom: calc(0.5 * var(--r-block-margin));
+		}
+		.multirow > div.tall {
+		  flex-basis: 80%;
+		}
+		.multirow > div.taller {
+		  flex-basis: 120%;
+		}
+		.multirow > div.tallest {
+		  flex-basis: 200%;
+		}
+	
+		/* Margins */
+		.space-top {
+		  margin-top: calc(3 * var(--r-block-margin)) !important;
+		}
+    .small-space-top {
+      margin-top: calc(1.5 * var(--r-block-margin)) !important;
+    }
+		.more-space-top {
+		  margin-top: calc(12 * var(--r-block-margin)) !important;
+		}
+	
+		/* Text alignment */
+		.align-left {
+		  text-align: left;
+		}
+	
+		/* Text size */
+		.shrink-text {
+		  font-size: 67%;
+		}
+		.shrink-text-slight {
+		  font-size: 85%;
+		}
+	
+		/* iframe borders */
+		iframe {
+		  border: none;
+		}
+	
+		.reveal .slides section .fragment.moveaway {
+		  opacity: 1;
+		  visibility: inherit;
+		  will-change: transform opacity;
+		  transition: all 1.0s ease;
+		}
+		.reveal .slides section .fragment.moveaway.visible {
+		  opacity: 0.3;
+		  transform: scale(0.3);
+		}
+	
+		/* Special case: summary slide */
+		.summary-slide > div {
+		  height: 25%;
+		  padding-top: 5px;
+		  padding-bottom: 5px;
+		  border-style: solid;
+		  border-color: #222;
+		  border-width: medium;
+		  box-sizing: border-box;
+		}
+	
+		.summary-slide > div > div > img,
+		.summary-slide > div > div > video
+		{
+		  height: 100%;
+		  max-height: 100%;
+		  margin-top: 0;
+		  margin-bottom: 0;
+		}
+	
+		.summary-slide > div > div {
+		  display: flex;
+		  justify-content: center;
+		  align-content: center;
+		  flex-direction: column;
+		  flex-wrap: wrap;
+		}
+	
+		.summary-slide > div > div > img,
+		.summary-slide > div > div > video
+		{
+		  object-fit: contain;
+		  margin-top: 0;
+		  margin-bottom: 0;
+		}
+	
+		.df-color {
+		  color: orange;
+		  font-weight: bold;
+		}
+		.phi-color {
+		  color: cyan;
+		  font-weight: bold;
+		}
+	
+		/* Prevent code blocks from stretching horizontally */
+		.reveal pre {
+		  display: inline-block;
+		  width: auto;
+		}
+
+		ul > li {
+    	margin-left: -30px;
+		}
+	</style>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+        <section class="full-height">
+          <div class="compact">
+            <h2 style="font-size:250%;">Deep Potential</h2>
+            <h3 style="font-size:140%;">Determining gravitational potential from a snapshot of stellar kinematics</h3>
+            <p>IWR, Heidelberg, 27 February 2024</p>
+            <img class="full-width" data-src="../media/deep_potential/barred_nbody_timesteps_background.svg"></img>
+            <h4 class="">Taavet Kalda, <span style="color:gray;">Gregory M. Green, Soumavo Ghosh (MPIA)</span></h4>
+          </div>
+          <div class="abs-bottom-right">
+            <img data-src="../media/logos/MPIA_horizontal.svg" class="half-width" style="filter:contrast(0.5) brightness(1.0);"></img>
+          </div>
+          <div class="abs-bottom-left">
+            <img data-src="../media/logos/AvH-Logo_horizontal.svg" class="half-width" style="width:40%; filter:contrast(0.5) brightness(1.2);"></img>
+          </div>
+					<aside class="notes">
+						<p>I'm Taavet and I'm a 2nd year PhD student from the Max Planck Institute of Astronomy in Heidelberg in Germany and I'm here to present my research.</p>
+						<p>I'm going to be talking about Deep Potential, which is a machine learning based method for inferring the gravitational potential of a stellar system based on a snapshot of its stellar kinematics.</p>
+					</aside>
+        </section>
+
+				<section>
+					<h2>Outline of the talk</h2>
+					<ol>
+					  <li>Motivation</li>
+						<li>Theoretical formalism</li>
+					  <li>Application on a $N$-body simulation of a barred galaxy</li>
+					  <li>Milky Way + Gaia and next steps</li>
+					</ol>
+				</section>
+
+				<section>
+					<section data-background="../media/misc/Milky_Way_Arch.jpg" class="full-height">
+						<h3>Motivation</h3>
+						<div class="footer">
+							<p class="attribution">(image credit: ESO)</p>
+						</div>
+					</section>
+
+					<section>
+            <div class="multicol vcenter">
+						<div class="r-stack" style="flex: auto">
+							<div class="fragment" data-fragment-index=1>
+								<h4>Artist's impression of the Milky Way</h4>
+								<img data-src="../media/gaia/milky_way_gaia_range.jpg" width="100%" style="flex: auto;"></img>
+								<p class="attribution"><a href="https://www.nasa.gov/feature/clumpy-recycled-gas-from-stars-surrounds-milky-way">(image credit: NASA/JPL-Caltech/R. Hurt)</a></p>
+							</div>
+						</div>
+						<ul>
+							<li class="fragment" -data-fragment-index=1>Gaia + spectroscopic surveys provides us with 33 million stars with full 6D phase-space coordinates.</li>
+							<li class="fragment" -data-fragment-index=2>What can we figure out about the overall matter distribution based on the positions of surveyed stars?</li>
+						</ul>
+						<aside class="notes">
+							<p>One of the questions that the field of galactic dynamics aims to answer is how much we can infer about the overall matter distribution based on the limited things that we do see.</p>
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Dynamics</h2>
+						<div class="multicol vcenter">
+							<ul>
+								<li class="fragment" data-fragment-index=1>
+									We treat stars as point masses with 3-dimensional position $\vec x$ and velocity $\vec v$.
+								</li>
+								<li class="fragment" data-fragment-index=2>
+									<i>Accelerations</i> guided by gravity:
+									$$
+									\vec a = -\vec\nabla \Phi \left( \vec{x} \right).
+									$$
+								</li>
+								<li class="fragment" data-fragment-index=3>$\vec a$ is unobservable <em>(as of yet)</em>.
+									<ul>
+										<li class="fragment" data-fragment-index=3>Accelerations are $\sim 1\,\mathrm{cm/s/decade}$.</li>
+									</ul>
+								</li>
+								<li class="fragment small-space-top" data-fragment-index=4>Knowing $\Phi\left(\vec{x}\right)$ would tell us the distribution of <em>total</em> mass (baryonic + dark) in the Milky Way.
+								$$ \rho_\mathrm{total} = \frac{1}{4\pi}\nabla^2 \Phi(\vec x).$$
+								</li>
+							</ul>
+							<div>
+								<img data-src="../media/deep_potential/deep_potential_explanatory_figure_observations.svg" width="100%" class="fragment" data-fragment-index=1></img>
+								<!-- <p class="attribution"><a href="https://www.nasa.gov/feature/clumpy-recycled-gas-from-stars-surrounds-milky-way">(image credit: NASA/JPL-Caltech/R. Hurt)</a></p> -->
+							</div>	
+						</div>
+					</section>
+	
+					<section data-transition="none-out">
+						<h2> How to find $\Phi(\vec x)$?</h2>
+						<!-- <div style="display:inline-flex; flex-wrap:nowrap; flex-direction:column;"> -->
+						<div>
+							<ul>
+								<li class="fragment" data-fragment-index=1>In principle, any potential fits the observation.</li>
+								<li class="fragment" data-fragment-index=2>Need to assume something about how the system evolves.</li>
+								<li class="fragment fade-in-then-out" data-fragment-index=3> <em>Stationarity:</em> The density of stars is time-independent.</li>
+							</ul>
+						</div>
+						<!-- <p class="fragment" data-fragment-index=3> <em>Stationarity:</em> The density of stars is time-independent.</p> -->
+						<div class="r-stack">
+							<video width="50%" data-autoplay data-src="../media/deep_potential/plummer_trajectories_1.mp4" loop="loop" class="fragment current-visible" data-fragment-index=3></video>
+						</div>
+					</section>
+	
+					<section data-transition="none-in fade-out">
+						<h2> How to find $\Phi(\vec x)$?</h2>
+						<!-- <div style="display:inline-flex; flex-wrap:nowrap; flex-direction:column;"> -->
+						<div>
+							<ul>
+								<li>In principle, any potential fits the observation.</li>
+								<li>Need to assume something about how the system evolves.</li>
+								<li> <em>Stationarity</em> can be enforced in different frames.</li>
+							</ul>
+						</div>
+						<!-- <p class="fragment" data-fragment-index=3> <em>Stationarity:</em> The density of stars is time-independent.</p> -->
+						<div class="r-stack">
+							<video width="50%" data-autoplay data-src="../media/deep_potential/plummer_squished_rotating_trajectories.mp4" loop="loop"></video>
+							<video width="50%" data-autoplay data-src="../media/deep_potential/plummer_squished_corotating_trajectories.mp4" loop="loop" class="fragment current-visible" ></video>
+						</div>
+					</section>
+
+					<section data-transition="none-out">
+						<div style="position: absolute; top: 0px;">
+							<h3>Theoretical formalism</h3>
+							
+							<ul>
+								<li class="fragment">We treat the stars using distribution functions.</li>
+								<li class="fragment">$f(\vec x, \vec v, t)$ - What is the probability of finding a star with position $\vec x$ and velocity $\vec v$ at time $t$?</li>
+								<ul>
+									<li class="fragment">
+										All-sky surveys provide us with $f(\vec x, \vec v, t=t_0)$.
+									</li>
+								</ul>
+								<li class="fragment">Nice because $f(\vec x, \vec v, t)$ evolves according to the Boltzmann equation:
+									$$
+										\frac{\mathrm{d}f}{\mathrm{d}t}
+										\equiv
+										\frac{\partial f}{\partial t}
+										+
+											\vec v\cdot\frac{\partial f}{\partial \vec x}
+											-\frac{\partial \Phi}{\partial \vec x}\cdot \frac{\partial f}{\partial \vec v}
+										= 0 \, .
+									$$
+								</li>
+								<li class="fragment" style="text-align: left;"> 		
+									<em>Stationarity:</em> $\frac{\partial f}{\partial t} = 0$
+									<p align-left>
+										&rArr; Adjust $\Phi\left(\vec x\right)$ until $\frac{\partial f}{\partial t} \rightarrow 0$ everywhere.
+									</p>
+								</li>
+							</ul>
+						</div>
+					</section>
+
+					<section data-transition="none-in fade-out">
+						<div style="position: absolute; top: 20px;">
+							<h3>Theoretical formalism</h3>
+							
+							<ul>
+								<li>We treat the stars using distribution functions.</li>
+								<li>$f(\vec x, \vec v, t)$ - What is the probability of finding a star with position $\vec x$ and velocity $\vec v$ at time $t$?</li>
+								<ul>
+									<li>
+										All-sky surveys provide us with $f(\vec x, \vec v, t=t_0)$.
+									</li>
+								</ul>
+								<li>Nice because $f(\vec x, \vec v, t)$ evolves according to the Boltzmann equation:
+									$$
+										\frac{\mathrm{d}f}{\mathrm{d}t}
+										\equiv
+										\frac{\partial f}{\partial t}
+										+
+											\vec v\cdot\frac{\partial f}{\partial \vec x}
+											-\frac{\partial \Phi}{\partial \vec x}\cdot \frac{\partial f}{\partial \vec v}
+										= 0 \, .
+									$$
+								</li>
+								<li>
+									<em>Stationarity:</em> $\left(\frac{\partial f}{\partial t}\right)_\Omega \equiv \frac{\partial f}{\partial t} + \left(\vec\Omega\times\vec x\right)\cdot \frac{\partial f}{\partial \vec x} + \left(\vec\Omega\times\vec v\right)\times\frac{\partial f}{\partial \vec v} = 0$
+									<p align-left>
+										&rArr; Adjust $\Phi\left(\vec x\right), \Omega$ until $\left(\frac{\partial f}{\partial t}\right)_\Omega \rightarrow 0$ everywhere.
+									</p>
+								</li>
+							</ul>
+						</div>
+					</section>
+
+					<section>
+						<h3>Recap: What are the assumptions?</h3>
+						Find $\Phi(\vec x)$, which is equivalent to knowing the <b><em>total</em></b> matter distribution, assuming:
+						<ol>
+							<li class="fragment">Stars orbit's are guided by gravitational potential $\Phi \left( \vec{x} \right)$.</li>
+							<li class="fragment">We observe a snapshot of stars that are statistically stationary in a rotating frame.</li>
+							<li class="fragment">Matter density is non-negative everywhere: ${\nabla^2 \Phi \geq 0}$.</li>
+						</ol>
+					</section>
+
+					<section>
+						<h3>Theoretical formalism continued</h3>
+						<p>We need to be able to calculate gradients of the <span class="df-color">distribution function</span>:</p>
+						<p>
+							$$
+							\require{color}
+							\sum_{\mathrm{dimension}\ i} \!
+							\left(
+							v_i \, {\color{orange} \frac{\partial f}{\partial x_i}}
+							-\frac{\partial \Phi}{\partial x_i} {\color{orange} \frac{\partial f}{\partial v_i}}
+							\right)
+							= 0 \, .
+							$$
+						</p>
+					</section>
+
+					<section>
+						<p>Our parameterization of the <span class="phi-color">potential</span> needs to be easily differentiable:</p>
+						<p>
+							$$
+							\sum_{\mathrm{dimension}\ i} \!
+							\left(
+							v_i \, \frac{\partial f}{\partial x_i}
+							-{\color{cyan} \frac{\partial \Phi}{\partial x_i}} \frac{\partial f}{\partial v_i}
+							\right)
+							= 0 \, .
+							$$
+						</p>
+						</section>
+				</section>
+
+				<section>
+					<h2>How neural networks can help us</h2>
+					<div class="multicol vcenter">
+						<div>
+							<ul>
+								<li class="fragment" data-fragment-index=1>Universal approximators.</li>
+								<li class="fragment" data-fragment-index=2>Auto-differentiability.</li>
+								<li class="fragment" data-fragment-index=3>Given a neural network $y_\theta(x)$ with weights $\theta$, we can analytically compute both $\frac{\partial y_\theta}{\partial \theta}$ and $\frac{\partial y_\theta}{\partial x}$.</li>
+							</ul>
+						</div>
+						<div>
+							<img class="fragment" data-fragment-index=1 data-src="../media/misc/Artificial_neural_network_dark.svg" width="70%"></img>
+						</div>
+					</div>
+
+					<aside class="notes">
+						<p>This naturally leads into representing, for example, the gravitational potential with a neural network.</p>
+					</aside>
+				</section>
+				
+				<section>
+          <section>
+            <h4>Overview of &ldquo;Deep Potential&rdquo;</h4>
+            <img class="r-stretch" data-src="../media/deep_potential/deep_potential_explanatory_figure.svg"></img>
+            <p class="attribution">(<a href="https://ui.adsabs.harvard.edu/abs/2020arXiv201104673G/abstract">Green &amp; Ting 2020</a>; <a href="https://ui.adsabs.harvard.edu/abs/2023ApJ...942...26G/abstract">Green, Ting &amp; Kamdar 2023</a>)</p>
+          </section>
+
+          <section>
+            <h4>Fitting the distribution function</h4>
+            <img class="r-stretch" data-src="../media/deep_potential/deep_potential_explanatory_figure_df.svg"></img>
+            <p class="attribution">(<a href="https://ui.adsabs.harvard.edu/abs/2020arXiv201104673G/abstract">Green &amp; Ting 2020</a>)</p>
+          </section>
+
+          <section>
+            <h3>Normalizing flows</h3>
+            <div class="multicol vcenter">
+              <div>
+                <video data-autoplay data-src="../media/deep_potential/trajectories_moons_grid_loop_1600.mp4" loop="loop"></video>
+              </div>
+              <ul>
+								<li>
+									<p>Can approximate probability density functions.</p>
+									<ul>
+										<li>Normalized: $\int f_\varphi(\vec x, \vec v) \mathrm{d}^3\vec x\mathrm{d}^3\vec v = 1$</li>
+										<li><span class="df-color">differentiable</span>.</li>
+										<li>Sampleable.</li>
+									</ul>
+								</li>
+                <li class="fragment">
+                  <p>How they work:</p>
+									<p>&nbsp;&nbsp;&nbsp;Invertible transformation: $\vec{x} \leftrightarrow \vec{y}$</p>
+                  <p>&nbsp;&nbsp;&nbsp;$p \left( \vec{x} \right)$ is simple, but $p \left( \vec{y} \right)$ is complicated.</p>
+                </li>
+
+                <!--<li class="fragment">
+                  <p>Sampling: draw $\vec{x} \sim p\big(\vec{x}\big)$, transform to $\vec{y}$.</p>
+                </li>!-->
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h4>Fitting the distribution function</h4>
+            <img data-src="../media/deep_potential/deep_potential_explanatory_figure_df.svg"></img>
+            <p>
+              $f_{\varphi}$ is a normalizing flow with a large number of fitting parameters, $\varphi$.
+            </p>
+            <p class="fragment space-top">
+              We train $\varphi$ to maximize the log-likelihood of the stars:
+              <!-- $$
+              \DeclareMathOperator*{\argmax}{arg\,max}
+              \varphi^{\ast}
+              =
+              \argmax_{\varphi} \bigg[
+                \ln p \left( \left\{ \hat{x} , \hat{v} \right\} \mid \varphi \right)
+              \bigg]
+              =
+              \argmax_{\varphi}
+              \Bigg[
+                \sum_{\mathrm{star}\ k}
+                  \ln f_{\varphi} \! \left( \hat{x}_k , \hat{v}_k \right)
+              \Bigg]
+              \, .
+              $$ -->
+							$$
+              L_\varphi =
+                \sum_{\mathrm{star}\ k}
+                  \ln f_{\varphi} \! \left( \vec{x}_k , \vec{v}_k \right)
+              \, .
+              $$
+            </p>
+          </section>
+
+          <section>
+            <h4>Compute gradients of the distribution function</h4>
+            <img width=60% data-src="../media/deep_potential/deep_potential_explanatory_figure_df_grads.svg"></img>
+            <p>Normalizing flows are <span class="df-color">differentiable</span>.</p>
+            <div class="fragment space-top">
+              <p>Easy to implement in autodiff packages such as Tensorflow, PyTorch and JAX.</p>
+							<pre><code class="python" data-trim>
+                with tf.GradientTape() as g:
+                  g.watch(eta)
+                  f = flow(eta)
+                df_deta = g.gradient(f, eta)
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h4>Fitting the potential</h4>
+            <img data-src="../media/deep_potential/deep_potential_explanatory_figure_Phi.svg"></img>
+            <div class="r-stack">
+              <div class="fragment current-visible">
+                <p>Represent $\Phi$ as a neural network: $\Phi_{\theta} \left( \vec{x} \right)$.
+                <p>&rArr; <span class="phi-color">Differentiable</span>: $\frac{\partial \Phi}{\partial \vec{x}}$.</p>
+              </div>
+              <div class="fragment current-visible">
+                <p>Train $\theta$, $\Omega$ to minimize <span class="green">non-stationarity</span>:</p>
+                <p>
+									$$
+                  \require{color}
+                  \DeclareMathOperator*{\argmin}{arg\,min}
+                  \DeclareMathOperator*{\asinh}{asinh}
+									L_\Phi = 
+                  \left<
+                    {\color{lightgreen}
+                      \asinh \left|
+                        \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
+                      \right|
+                    }
+                    +
+                    \lambda \, \asinh \left(
+                      \max \left\{
+                        -\nabla^2 \Phi_{\theta}
+                        , \,
+                        0
+                      \right\}
+                    \right)
+                  \right>_{
+                    \vec{x} , \vec{v} \, \sim \, f_{\varphi^{\ast}}
+                  }
+                  $$
+                  <!-- $$
+                  \require{color}
+                  \DeclareMathOperator*{\argmin}{arg\,min}
+                  \DeclareMathOperator*{\asinh}{asinh}
+                  \theta^{\ast}, \Omega^{\ast}
+                  =
+                  \argmin_{\theta, \Omega}
+                  \left<
+                    {\color{lightgreen}
+                      \asinh \left|
+                        \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
+                      \right|
+                    }
+                    +
+                    \lambda \, \asinh \left(
+                      \max \left\{
+                        -\nabla^2 \Phi_{\theta}
+                        , \,
+                        0
+                      \right\}
+                    \right)
+                  \right>_{
+                    \vec{x} , \vec{v} \, \sim \, f_{\varphi^{\ast}}
+                  }
+                  $$ -->
+                </p>
+              </div>
+              <div class="fragment current-visible">
+                <p>Penalize <span class="red">negative mass densities</span>:</p>
+                <p>
+                  $$
+                  \require{color}
+                  \DeclareMathOperator*{\argmin}{arg\,min}
+                  \DeclareMathOperator*{\asinh}{asinh}
+									L_\Phi = 
+                  \left<
+                    \asinh \left|
+					  \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
+                    \right|
+                    +
+                    {\color{red}
+                      \lambda \, \asinh \left(
+                        \max \left\{
+                          -\nabla^2 \Phi_{\theta}
+                          , \,
+                          0
+                        \right\}
+                      \right)
+                    }
+                  \right>_{
+                    \vec{x} , \vec{v} \, \sim \, f_{\varphi^{\ast}}
+                  }
+                  $$
+                </p>
+              </div>
+              <div class="fragment">
+                <p><span class="cyan">Average over samples</span> drawn from DF:</p>
+                <p>
+                  $$
+                  \require{color}
+                  \DeclareMathOperator*{\argmin}{arg\,min}
+                  \DeclareMathOperator*{\asinh}{asinh}
+									L_\Phi = 
+                  {\color{cyan}
+                  \left<
+                    {\color{white}
+                    \asinh \left|
+                      \left(\frac{\partial f_{\varphi^{\ast}}}{\partial t}\right)_\Omega
+                    \right|
+                    +
+                    \lambda \, \asinh \left(
+                      \max \left\{
+                        -\nabla^2 \Phi_{\theta}
+                        , \,
+                        0
+                      \right\}
+                    \right)
+                    }
+                  \right>_{
+                    \vec{x} , \vec{v} \, \sim \, f_{\varphi^{\ast}}
+                  }
+                  }
+                  $$
+                </p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+
+        <section>
+          <section>
+            <h2>Application:</h2>
+            <h3>$N$-body simulation of a barred galaxy</h3>
+            <p class="space-top"><a href="https://ui.adsabs.harvard.edu/abs/2023arXiv231000040K">Kalda, Green &amp; Ghosh (2023), arXiv:2310.00040</a></p>
+          </section>
+
+          <section>
+						<h3>$N$-body simulation</h3>
+            <div class="multicol vcenter">
+              <div class="">
+                <img data-src="../media/deep_potential/barred_nbody_true_rho_x_y_t80.svg" class="full-width"></img>
+              </div>
+              <ul>
+                <li class="fragment">
+									$10^6$ stellar particles, $5\cdot 10^5$ dark matter particles.
+									<ul>
+										<li class="fragment">$m_\mathrm{stellar}=10^5M_\odot$, $m_\mathrm{dark} = 3.2\cdot 10^5M_\odot$.</li>
+									</ul>
+								</li>
+                <li class="fragment">
+                  softening length $\epsilon = 150\,\mathrm{pc}$.
+									<ul>
+										<li>Point mass potential $\Phi(r) = -Gm/(\epsilon^2 + r^2)^{1/2}$</li>
+									</ul>
+								</li>
+                <li class="fragment"> Integration time $t=9\,\mathrm{Gyr}$.</li>
+								<li class="fragment"> We can test how well we reproduce the rotation and matter density at various time steps!</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h3>1. Fit the distribution function</h3>
+            <div class="r-stack">
+              <img data-src="../media/deep_potential/barred_nbody_DF_marginal_x_y_t80.svg" class="full-width fragment"></img>
+              <img data-src="../media/deep_potential/barred_nbody_DF_marginal_vR_vT_t80.svg" class="full-width fragment"></img>
+            </div>
+          </section>
+
+          <section>
+            <h3>2. Fit the gravitational potential</h3>
+            <div class="r-stack space-top">
+              <p class="fragment current-visible" data-fragment-index=1>Accelerations: $\vec{a} = -\vec\nabla \Phi$</p>
+              <p class="fragment current-visible" data-fragment-index=2>Densities: $\rho = \nabla^2 \Phi / \left(4\pi G\right)$</p>
+							<p class="fragment fade-in" data-fragment-index=3>Rotation speed: $\Omega= 17.5\,\mathrm{km\,s^{-1}\,kpc^{-1}}$ (truth: $20.7\,\mathrm{km\,s^{-1}\,kpc^{-1}}$)</p>
+            </div>
+            <div class="r-stack">
+              <img data-src="../media/deep_potential/barred_nbody_true_vs_model_acc_t80_x.svg" class="full-width fragment current-visible" data-fragment-index=1></img>
+              <img data-src="../media/deep_potential/barred_nbody_true_vs_model_rho_x_y_t80.svg" class="full-width fragment fade-in" data-fragment-index=2></img>
+            </div>
+          </section>
+
+          <section>
+            <div class="multicol vcenter">
+              <div class="r-stack wide">
+                <img data-src="../media/deep_potential/barred_nbody_dlnf_dt_x_y_t80_lab.svg" class="full-width fragment"></img>
+                <img data-src="../media/deep_potential/barred_nbody_dlnf_dt_x_y_t80_rot.svg" class="full-width fragment"></img>
+              </div>
+              <div>
+                <h3>Non-stationarities</h3>
+                <p>How much non-stationarity is left over in the system?</p>
+                <p class="fragment">Galaxy is more stationary in the rotating frame.</p>
+                <p class="fragment">$\Omega$ inferred to ~15% accuracy.</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <div class="multicol vcenter">
+              <div class="wide">
+                <img data-src="../media/deep_potential/barred_nbody_marginal_4kpc.svg" class="full-width"></img>
+              </div>
+              <div>
+                <h3>Solar-like sub-volume</h3>
+                <p class="fragment">Similar to what <em>Gaia</em> observes.</p>
+                <p class="fragment">$\Omega$ inferred to ~20% accuracy.</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <div class="multicol vcenter">
+              <div class="r-stack wide">
+                <img data-src="../media/deep_potential/barred_nbody_true_vs_model_dm_vs_r_t80_tot_model.svg" class="full-width fragment" data-fragment-index=1></img>
+                <img data-src="../media/deep_potential/barred_nbody_true_vs_model_dm_vs_r_t80_tot.svg" class="full-width fragment" data-fragment-index=2></img>
+                <img data-src="../media/deep_potential/barred_nbody_true_vs_model_dm_vs_r_t80.svg" class="full-width fragment" data-fragment-index=3></img>
+              </div>
+              <div>
+                <h3>Radial density profile</h3>
+                <p>$\rho\left(r\right)$</p>
+                <p class="fragment" data-fragment-index=3>Subtract stars from modeled density to obtain dark-matter density.</p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+				<section>
+					<section data-background-image="../media/misc/eso_MW.jpg" data-vertical-align-top>
+						<h2>Milky Way</h2>
+					</section>
+
+					<section>
+            <div class="multicol vcenter">
+							<div class="r-stack">
+								<div class="fragment fade-out" data-fragment-index=1>
+									<img data-src="../media/gaia/logo.jpg" width=400px></img>
+								</div>
+								<div class="fragment" data-fragment-index=1>
+									<h4>Artist's impression of the Milky Way</h4>
+									<img data-src="../media/gaia/milky_way_gaia_range.jpg" style="rotate:90deg;" width="100%"></img>
+									<p class="attribution"><a href="https://www.nasa.gov/feature/clumpy-recycled-gas-from-stars-surrounds-milky-way">(image credit: NASA/JPL-Caltech/R. Hurt)</a></p>
+								</div>
+							</div>
+							<ul>
+								<li>Gaia provides us with 33 million stars with full 6D phase-space coordinates.</li>
+							<ul>
+								<li>Operating between 2013 and 2025.
+								</li>
+								<li>Most precise three-dimensional map of the Milky Way to date.</li>
+							</ul>
+							<li class="fragment" data-framgent-index=1>We can construct datasets with $\sim 1-5$ million stars.</li>
+							<li class="fragment" data-framgent-index=2>Extinction and crowding makes our life complicated.</li>
+							<!-- <li class="fragment" data-framgent-index=3>We need a population of stars with uniform spatial completeness.</li>-->
+							</ul>
+						</div>
+					</section>
+
+					<section class="full-width">
+            <div class="multicol vcenter">
+						<div class="r-stack" style="flex: auto">
+							<img class="fade-out" data-fragment-index=1 data-src="../media/deep_potential/completeness_allvslowE_m_G.svg" width=800px></img>
+							<img class="fragment" data-fragment-index=3 data-src="../media/deep_potential/completeness_allvslowE_G-Rp.svg" width=800px></img>
+						</div>
+						<div>
+							<ul>
+								<li><em>Selection function:</em> probability of a star with given physical parameters getting detected. Also called <em>completeness</em>.</li>
+								<li class="fragment" data-fragment-index=1>We want a dataset of stars with uniform completeness.</li>
+							</ul>
+						</div>
+					</section>
+
+					<section class="compact">
+            <h3>Modeling the selection function</h3>
+            <div class="r-stack">
+              <img class="fragment full-width" data-src="../media/deep_potential/gaia_sel_mollweide_count.svg"></img>
+              <img class="fragment full-width" data-src="../media/deep_potential/gaia_sel_mollweide_E.svg"></img>
+              <img class="fragment full-width" data-src="../media/deep_potential/gaia_sel_mollweide_astrometric_matched_transits.svg"></img>
+              <img class="fragment full-width" data-src="../media/deep_potential/gaia_sel_mollweide_completeness.svg"></img>
+              <img class="fragment full-width" data-src="../media/deep_potential/gaia_sel_mollweide_sel_optuna.svg"></img>
+              <img class="fragment full-width" data-src="../media/deep_potential/gaia_sel_mollweide_sel_residue_optuna.svg"></img>
+            </div>
+          </section>
+
+					<section>
+						<h3>A nice way of looking at the data</h3>
+					</section>
+					<section style="height: 100%;">
+						<div class="r-stack" style="height: 100%;">
+							<img data-src="../media/dpot_gaia/count_dist_M.svg" class="fade-out" style="height: 100%;"></img>
+							<img data-src="../media/dpot_gaia/completeness_dist_M.svg" class="full-width fragment" style="height: 100%;"></img>
+							<img data-src="../media/dpot_gaia/completeness_dist_M_04kpc.svg" class="full-width fragment" style="height: 100%;"></img>
+							<img data-src="../media/dpot_gaia/completeness_dist_M_pad_04kpc.svg" class="full-width fragment" style="height: 100%;"></img>
+						</div>
+					</section>
+
+          <section>
+            <h3>1. Fitting the distribution function</h3>
+            <div class="r-stack">
+              <img data-src="../media/dpot_gaia/DF_marginal_x_y.svg" class="full-width fragment"></img>
+              <img data-src="../media/dpot_gaia/DF_marginal_cylvR_cylvT.svg" class="full-width fragment"></img>
+              <img data-src="../media/dpot_gaia/DF_marginal_z_vz.svg" class="full-width fragment"></img>
+            </div>
+          </section>
+
+          <section style="height: 100%;">
+            <h3>2. Fitting the gravitational potential</h3>
+            <div class="r-stack space-top">
+              <p class="fragment current-visible" data-fragment-index=1>Accelerations: $\vec{a} = -\vec\nabla \Phi$. Mean $a_x = 1.80(1)\cdot 10^{-10}\mathrm{m/s^2}$</p>
+              <p class="fragment current-visible" data-fragment-index=2>Accelerations: $\vec{a} = -\vec\nabla \Phi$. Mean $a_y = -0.01(1)\cdot 10^{-10}\mathrm{m/s^2}$</p>
+              <p class="fragment current-visible" data-fragment-index=3>Accelerations: $\vec{a} = -\vec\nabla \Phi$. Mean $a_z = 0.00(3)\cdot 10^{-10}\mathrm{m/s^2}$</p>
+              <p class="fragment current-visible" data-fragment-index=4>Densities: $\rho = \nabla^2 \Phi / \left(4\pi G\right)$. Mean $\rho = 0.086\,\mathrm{M_\odot/pc^3}$</p>
+              <p class="fragment current-visible" data-fragment-index=5>Densities: $\rho = \nabla^2 \Phi / \left(4\pi G\right)$. Mean $\rho = 0.086\,\mathrm{M_\odot/pc^3}$</p>
+							<p class="fragment current-visible" data-fragment-index=6>Best-fit rotation speed: $\Omega= 25.7\,\mathrm{km\,s^{-1}\,kpc^{-1}}$</p>
+							<p class="fragment fade-in" data-fragment-index=7>Movement towards galactic center: $\vec v_0 = (-14, -225, -7)\,\mathrm{km\,s^{-1}}$</p>
+            </div>
+            <div class="r-stack" style="height: 80%;">
+              <img data-src="../media/dpot_gaia/hist2d_cylR_FcylR.svg" class="full-width fragment current-visible" data-fragment-index=1 style="height: 100%;"></img>
+              <img data-src="../media/dpot_gaia/hist2d_cylphi_Fcylphi.svg" class="full-width fragment current-visible" data-fragment-index=2 style="height: 100%;"></img>
+              <img data-src="../media/dpot_gaia/hist2d_cylz_Fcylz.svg" class="full-width fragment current-visible" data-fragment-index=3 style="height: 100%;"></img>
+              <img data-src="../media/dpot_gaia/rho_marginal_x_y_cyl.svg" class="full-width fragment current-visible" data-fragment-index=4 style="height: 100%;"></img>
+              <img data-src="../media/dpot_gaia/rho_marginal_x_z_cyl.svg" class="full-width fragment fade-in" data-fragment-index=5 style="height: 100%;"></img>
+            </div>
+          </section>
+
+					<section>
+            <h3>What's next?</h3>
+						<div class="r-stack">
+							<ul>
+								<li class="fragment">Comparisons with literature!</li>
+								<li class="fragment">More diagnostics, e.g:
+									<ul>
+										<li>How stationarity gets improved in the rotating frame compared to rest frame.</li>
+										<li>How much can we extract about dark matter</li>
+									</ul>
+								</li>
+								<li class="fragment">
+									Incorporating datasets that reach farther out (up to 2kpc)
+									<ul>
+										<li>Main difficulty lies in training normalizing flows!</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</section>
+				</section>
+
+				<section>
+					<h1>Questions?</h1>
+				</section>
+			</div>
+
+		</div>
+
+    <script src="../revealjs/dist/reveal.js"></script>
+    <script src="../revealjs/plugin/math/math.js"></script>
+    <script src="../revealjs/plugin/notes/notes.js"></script>
+    <script src="../revealjs/plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				history: true,
+				transition: 'linear',
+				slideNumber: 'c/t',
+
+				mathjax2: {
+					config: 'TeX-AMS_HTML-full',
+					TeX: {
+						Macros: {
+							R: '\\mathbb{R}',
+							set: [ '\\left\\{#1 \\; ; \\; #2\\right\\}', 2 ]
+						}
+					}
+				},
+
+				// There are three typesetters available
+				// RevealMath.MathJax2 (default)
+				// RevealMath.MathJax3
+				// RevealMath.KaTeX
+				//
+				// More info at https://revealjs.com/math/
+				plugins: [ RevealMath.MathJax2, RevealNotes, RevealHighlight ]
+			});
+		</script>
+
+	</body>
+</html>
